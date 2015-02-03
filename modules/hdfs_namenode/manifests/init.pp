@@ -14,9 +14,6 @@
 #   limitations under the License.
 
 class hdfs_namenode {
-  require hdfs_client
-  require hadoop_server
-
   $PATH="/bin:/usr/bin"
 
   if $security == "true" {
@@ -59,95 +56,6 @@ class hdfs_namenode {
   service {"hadoop-hdfs-namenode":
     ensure => running,
     enable => true,
-  }
-  ->
-  exec {"yarn-home-mkdir":
-    command => "hadoop fs -mkdir -p /user/yarn",
-    unless => "hadoop fs -test -e /user/yarn",
-    path => "$PATH",
-    user => "hdfs",
-  }
-  ->
-  exec {"yarn-home-chown":
-    command => "hadoop fs -chown yarn:yarn /user/yarn",
-    path => "$PATH",
-    user => "hdfs",
-  }
-  ->
-  exec {"yarn-home-chmod":
-    command => "hadoop fs -chmod 755 /user/yarn",
-    path => "$PATH",
-    user => "hdfs",
-  }
-  ->
-  exec {"yarn-history-mkdir":
-    command => "hadoop fs -mkdir -p /user/yarn/history",
-    unless => "hadoop fs -test -e /user/yarn/history",
-    path => "$PATH",
-    user => "hdfs",
-  }
-  ->
-  exec {"yarn-history-chmod":
-    command => "hadoop fs -chmod 775 /user/yarn/history",
-    path => "$PATH",
-    user => "hdfs",
-  }
-  ->
-  exec {"yarn-history-chown":
-    command => "hadoop fs -chown -R mapred:mapred /user/yarn/history",
-    path => "$PATH",
-    user => "hdfs",
-  }
-  ->
-  exec {"yarn-app-logs-mkdir":
-    command => "hadoop fs -mkdir /user/yarn/app-logs",
-    unless => "hadoop fs -test -e /user/yarn/app-logs",
-    path => "$PATH",
-    user => "hdfs",
-  }
-  ->
-  exec {"yarn-app-logs-chmod":
-    command => "hadoop fs -chmod 1777 /user/yarn/app-logs",
-    path => "$PATH",
-    user => "hdfs",
-  }
-  ->
-  exec {"yarn-app-logs-chown":
-    command => "hadoop fs -chown yarn:mapred /user/yarn/app-logs",
-    path => "$PATH",
-    user => "hdfs",
-  }
-  ->
-  exec {"vagrant-home-mkdir":
-    command => "hadoop fs -mkdir /user/vagrant",
-    unless => "hadoop fs -test -e /user/vagrant",
-    path => "$PATH",
-    user => "hdfs",
-  }
-  ->
-  exec {"vagrant-home-chown":
-    command => "hadoop fs -chown vagrant:vagrant /user/vagrant",
-    path => "$PATH",
-    user => "hdfs",
-  }
-  ->
-  exec {"hive-warehouse":
-    command => "hadoop fs -mkdir -p /apps/hive/warehouse",
-    unless => "hadoop fs -test -e /apps/hive/warehouse",
-    path => "$PATH",
-    user => "hdfs",
-  }
-  ->
-  exec {"hive-warehouse-chown":
-    command => "hadoop fs -chown hive:hive /apps/hive/warehouse",
-    path => "$PATH",
-    user => "hdfs",
-  }
-  ->
-  exec {"hive-warehouse-chmod":
-    command => "hadoop fs -chmod 1777 /apps/hive/warehouse",
-    path => "$PATH",
-    user => "hdfs",
   }
   ->
   exec {"hdfs-tmp":
